@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css?family=DM+Sans:500&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  background: #6a706b;
+  font-family: 'DM Sans', sans-serif;
+}
+
+canvas,
+#ui {
+  display: block;
+  width: 100vw;
+  height: 66.6vw; /* height:width ratio = 9/5  */
+  background: #fffcf2;
+  max-height: 100vw;
+  max-width: 150vw; /* 5/9 */
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0; /* vertical center */
+  left: 0;
+  right: 0; /* horizontal center */
+  animation: fade-in 1s;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#ui {
+  position: absolute;
+  z-index: 10;
+  background: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+#score {
+  position: absolute;
+  top: 2%;
+  left: 2%;
+  font-size: 200%;
+  color: #cccccc;
+  pointer-events: none;
+}
+
+#endgame,
+#menu {
+  width: 100%;
+  height: 100%;
+}
+
+#menu > #flyck {
+  margin: auto;
+  text-align: center;
+  font-size: 643%;
+  margin-top: 40%;
+}
+
+#menu > .buttons {
+  height: 30%;
+}
+
+.buttons {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+#endgame > .buttons {
+  height: 50%;
+}
+
+.buttons > button {
+  margin: auto;
+  width: 100%;
+  border-radius: 1.25em;
+  height: 2.5em;
+  border: solid #cccccc 0.1em;
+  font-size: 3vh;
+  background: #fed766;
+  font-family: 'DM Sans', sans-serif;
+  color: #000000ad;
+  pointer-events: all;
+  outline: none;
+  cursor: pointer;
+}
+
+#high-scores {
+  text-align: center;
+  font-size: 2em;
+  margin-top: 45%;
+}
+
+.score-row {
+  max-width: 11em;
+  margin: auto;
+  border-bottom: solid 1px grey;
+}
+
+.score-row:last-child {
+  border-bottom: none;
+}
+
+.score-row > span {
+  float: left;
+  border-right: solid 1px grey;
+  min-width: 2em;
+}

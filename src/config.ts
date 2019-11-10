@@ -10,24 +10,11 @@ export const powerUpMeterPosition = {
   y: 60
 }
 
-export const backgroundColor = 0x414461
+export const poundRadius = 200
 
-export const circleColors = [
-  0xfe4a49,
-  0xfed766,
-  0x009fb7,
-  0xccff66,
-  0x5d2e8c,
-  0x00a878
-]
-export const colorNameMap = {
-  [0xfe4a49]: 'red',
-  [0xfed766]: 'orange',
-  [0x009fb7]: 'blue',
-  [0xccff66]: 'lime',
-  [0x5d2e8c]: 'purple',
-  [0x00a878]: 'green'
-}
+export const backgroundColor = 0x8d8682
+
+export const circleColors = [0x2b59c3, 0xd36582]
 export const circleAlpha = 0.7
 export const randomCircleColor = () =>
   circleColors[Math.floor(Math.random() * circleColors.length)]
@@ -59,3 +46,15 @@ export const bottomLimit = gameHeight - circleRadius * 4
 export const startingYPosition = bottomLimit + (gameHeight - bottomLimit) / 1.55
 export const randomYPos = () => topLimit + Math.random() * height
 export const randomXPos = () => 100 + Math.random() * 300
+
+export const scoreTextStyle = {
+  align: 'center',
+  dropShadowAngle: 0,
+  dropShadowBlur: 7,
+  dropShadowDistance: 0,
+  fill: ['white'],
+  fontSize: 70,
+  wordWrapWidth: 340,
+  fontFamily: 'sans-serif',
+  wordWrap: true
+}

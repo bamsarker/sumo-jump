@@ -1,6 +1,9 @@
 import * as PIXI from 'pixi.js'
 import { arenaRadius } from '../config'
 import { fade, grow } from './animations'
+import Player from './Player'
+import { Point } from '../interfaces'
+import { distanceBetween } from '../utils'
 
 export class Arena extends PIXI.Graphics {
   color: number
@@ -8,21 +11,40 @@ export class Arena extends PIXI.Graphics {
   constructor({
     y,
     x,
-    color,
     radius = arenaRadius
   }: {
     y: number
     x: number
-    color: number
     radius?: number
   }) {
     super()
-    this.color = color
+    this.color = 0xffeecf
     this.radius = radius
-    this.lineStyle(4, 0xffd900, 1)
     this.beginFill(this.color).drawCircle(0, 0, this.radius)
     this.x = x
     this.y = y
+  }
+
+  positionInBounds = (pos: Point) => {
+    const dist = distanceBetween(pos, this.position)
+    return dist > this.radius
+  }
+
+  checkBounds = (players: Player[]) => {
+    players
+      .filter(p => p.active)
+      .forEach(p => {
+        if (this.positionInBounds(p.position)) {
+          const opponent = players.find(player => player !== p)
+          opponent.scorePoint()
+          opponent.deactivate()
+          p.deactivate()
+          setTimeout(() => {
+            opponent.reset()
+            p.reset()
+          }, 1000)
+        }
+      })
   }
 
   redraw = () => {

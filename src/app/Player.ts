@@ -3,22 +3,37 @@ import { circleRadius, playerSpeed } from '../config'
 import { moveTo, grow, shake } from './animations'
 import { Linear, Circ } from 'gsap/TweenMax'
 import { Cursors, Point } from '../interfaces'
+import { ScoreText } from './ScoreText'
+import PoundEffect from './PoundEffect'
 
 export class Player extends Circle {
   rotationSpeed: number
   xSpeed: number
   ySpeed: number
   target: Circle
+  active: boolean
+  startingPos: Point
+  isGrounded: boolean
+  isKnockedBack: boolean
   handleGroundPound: (pounder: Player) => void
-  constructor({ x, y, color, keys, handleGroundPound }) {
+  score: number
+  scoreText: ScoreText
+  poundEffect: PoundEffect
+  constructor({ x, y, color, keys, handleGroundPound, scoreText }) {
     super({ x, y, color })
 
+    this.startingPos = { x, y }
+    this.poundEffect = new PoundEffect({ x, y, color, radius: circleRadius })
     this.xSpeed = 0
     this.ySpeed = 0
+    this.score = 0
+    this.scoreText = scoreText
+    this.isGrounded = true
+    this.isKnockedBack = false
 
     this.handleGroundPound = handleGroundPound
 
-    this.addChild(new Circle({ x: 15, y: 0, color: 0x000000, radius: 15 }))
+    this.addChild(new Circle({ x: 15, y: 0, color: 0x384d48, radius: 15 }))
     this.target = new Circle({
       x: circleRadius * 6,
       y: 0,
@@ -58,13 +73,35 @@ export class Player extends Circle {
     })
   }
 
+  activate = () => {
+    this.active = true
+  }
+
+  deactivate = () => {
+    this.active = false
+  }
+
+  reset = () => {
+    this.active = true
+    this.position.x = this.startingPos.x
+    this.position.y = this.startingPos.y
+  }
+
+  scorePoint = () => {
+    this.score++
+    this.scoreText.setScore(this.score)
+  }
+
   private bringToFront = () => {
     this.parent.setChildIndex(this, this.parent.children.length - 1)
   }
 
   private jump = () => {
+    if (this.isKnockedBack || !this.isGrounded) return
+
     this.bringToFront()
     const targetPosition = this.target.getGlobalPosition()
+    this.isGrounded = false
     Promise.all([
       moveTo(this, 0.5, {
         x: targetPosition.x,
@@ -74,20 +111,34 @@ export class Player extends Circle {
       grow(this, 1.5, 0.25, Circ.easeOut).then(() =>
         grow(this, 1, 0.25, Circ.easeIn)
       )
-    ]).then(() => {
-      this.handleGroundPound(this)
-      shake(this.parent, 2)
-    })
+    ]).then(this.land)
   }
 
-  private pushBack = (strength: number) => {
+  private land = () => {
+    this.isGrounded = true
+    this.handleGroundPound(this)
+    shake(this.parent, 2)
+    this.parent.addChildAt(
+      this.poundEffect,
+      this.parent.children.indexOf(this) - 1
+    )
+    this.poundEffect.play({ x: this.x, y: this.y })
+  }
+
+  isMoving = () => this.xSpeed !== 0 || this.ySpeed !== 0
+
+  pushBack = (strength: number) => {
+    this.isKnockedBack = true
+
+    this.isGrounded = true
+
     const x = -strength * Math.cos(this.rotation) + this.x
     const y = -strength * Math.sin(this.rotation) + this.y
 
     moveTo(this, 0.5, {
       x,
       y
-    })
+    }).then(() => (this.isKnockedBack = false))
   }
 
   private addCursors = (cursors: Cursors) => {
@@ -113,7 +164,10 @@ export class Player extends Circle {
   }
 
   update = (delta: number, opponent: Player) => {
+    if (!this.active || this.isKnockedBack || !this.isGrounded) return
+
     this.lookAt(opponent.x, opponent.y)
+
     this.position.x += this.xSpeed * delta
     this.position.y += this.ySpeed * delta
   }

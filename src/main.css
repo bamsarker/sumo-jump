@@ -1,12 +1,10 @@
-@import url('https://fonts.googleapis.com/css?family=DM+Sans:500&display=swap');
-
 body {
   margin: 0;
   padding: 0;
   overflow: hidden;
   min-height: 100vh;
   display: flex;
-  background: #6a706b;
+  background: #384d48;
   font-family: 'DM Sans', sans-serif;
 }
 
@@ -15,7 +13,7 @@ canvas,
   display: block;
   width: 100vw;
   height: 66.6vw; /* height:width ratio = 9/5  */
-  background: #fffcf2;
+  background: #c9a690;
   max-height: 100vw;
   max-width: 150vw; /* 5/9 */
   margin: auto;
@@ -25,6 +23,7 @@ canvas,
   left: 0;
   right: 0; /* horizontal center */
   animation: fade-in 1s;
+  box-sizing: border-box;
 }
 
 @keyframes fade-in {

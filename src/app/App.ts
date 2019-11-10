@@ -78,7 +78,7 @@ export class GameApp {
 
     const scoreText1 = new ScoreText({
       x: gameWidth - gameWidth * 0.12,
-      y: gameHeight * 0.2,
+      y: gameHeight - gameHeight * 0.2,
       bgColor: circleColors[1]
     })
     this.app.stage.addChild(scoreText1)
@@ -117,6 +117,8 @@ export class GameApp {
 
   private handleGroundPound = (pounder: Player) => {
     const opponent = this.players.find(p => p !== pounder)
+    if (!opponent.isGrounded) return
+
     const dist = distanceBetween(pounder.position, opponent.position)
     if (dist < poundRadius) {
       opponent.pushBack((poundRadius - dist) * 1.5)

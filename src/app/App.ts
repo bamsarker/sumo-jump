@@ -6,7 +6,8 @@ import {
   gameHeight,
   circleColors,
   poundRadius,
-  scoreTextStyle
+  scoreTextStyle,
+  arenaRadius
 } from '../config'
 import Player from './Player'
 import Arena from './Arena'
@@ -50,7 +51,7 @@ export class GameApp {
     })
     this.players.push(player)
     player.activate()
-    this.app.stage.addChild(player)
+    this.arena.addChild(player)
   }
 
   private addArena = () => {
@@ -84,8 +85,8 @@ export class GameApp {
     this.app.stage.addChild(scoreText1)
 
     this.addPlayer({
-      x: gameWidth / 2,
-      y: gameHeight * 0.25,
+      x: 0,
+      y: arenaRadius * -0.6,
       color: circleColors[0],
       keys: {
         up: 'ArrowUp',
@@ -98,8 +99,8 @@ export class GameApp {
       scoreText: scoreText0
     })
     this.addPlayer({
-      x: gameWidth / 2,
-      y: gameHeight * 0.75,
+      x: 0,
+      y: arenaRadius * 0.6,
       color: circleColors[1],
       keys: {
         up: 'w',

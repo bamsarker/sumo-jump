@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { arenaRadius } from '../config'
+import { arenaRadius, circleRadius } from '../config'
 import { fade, grow } from './animations'
 import Player from './Player'
 import { Point } from '../interfaces'
@@ -26,11 +26,12 @@ export class Arena extends PIXI.Graphics {
   }
 
   positionInBounds = (pos: Point) => {
-    const dist = distanceBetween(pos, this.position)
-    return dist > this.radius
+    const dist = distanceBetween({ x: 0, y: 0 }, pos)
+    return dist > this.radius + circleRadius
   }
 
   checkBounds = (players: Player[]) => {
+    this.updatePositionAndScale(players)
     players
       .filter(p => p.active)
       .forEach(p => {
@@ -45,6 +46,19 @@ export class Arena extends PIXI.Graphics {
           }, 1000)
         }
       })
+  }
+
+  updatePositionAndScale = (players: Player[]) => {
+    const center = {
+      x: (players[0].x + players[1].x) / 2,
+      y: (players[0].y + players[1].y) / 2
+    }
+    this.pivot.x = center.x / 2
+    this.pivot.y = center.y / 2
+
+    const dist = distanceBetween(players[0].position, players[1].position)
+    this.scale.x = 0.97 + ((arenaRadius * 2) / dist) * 0.025
+    this.scale.y = this.scale.x
   }
 
   redraw = () => {

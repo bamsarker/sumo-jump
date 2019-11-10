@@ -100,7 +100,11 @@ export class Player extends Circle {
     if (this.isKnockedBack || !this.isGrounded) return
 
     this.bringToFront()
-    const targetPosition = this.target.getGlobalPosition()
+    const targetGlobalPosition = this.target.getGlobalPosition()
+    const targetPosition = {
+      x: targetGlobalPosition.x - this.parent.position.x,
+      y: targetGlobalPosition.y - this.parent.position.y
+    }
     this.isGrounded = false
     Promise.all([
       moveTo(this, 0.5, {
@@ -117,11 +121,8 @@ export class Player extends Circle {
   private land = () => {
     this.isGrounded = true
     this.handleGroundPound(this)
-    shake(this.parent, 2)
-    this.parent.addChildAt(
-      this.poundEffect,
-      this.parent.children.indexOf(this) - 1
-    )
+    shake(this.parent, 3)
+    this.parent.addChildAt(this.poundEffect, 0)
     this.poundEffect.play({ x: this.x, y: this.y })
   }
 

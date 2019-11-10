@@ -41,7 +41,7 @@ export const shake = (
   }
   const randomPos = () => ({
     x: displayObject.position.x + Math.random() * size * 2 - size,
-    y: displayObject.position.x + Math.random() * size * 2 - size
+    y: displayObject.position.y + Math.random() * size * 2 - size
   })
   return promiseTo(displayObject, duration / 3, randomPos())
     .then(() => promiseTo(displayObject, duration / 3, randomPos()))

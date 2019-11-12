@@ -57,7 +57,8 @@ export class Arena extends PIXI.Graphics {
     this.pivot.y = center.y / 2
 
     const dist = distanceBetween(players[0].position, players[1].position)
-    this.scale.x = 0.97 + ((arenaRadius * 2) / dist) * 0.025
+    let scale = 0.97 + ((arenaRadius * 2) / dist) * 0.05
+    this.scale.x = Math.min(1.2, scale)
     this.scale.y = this.scale.x
   }
 

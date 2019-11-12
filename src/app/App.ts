@@ -117,6 +117,7 @@ export class GameApp {
   }
 
   private handleGroundPound = (pounder: Player) => {
+    console.log('handle ground pound')
     const opponent = this.players.find(p => p !== pounder)
     if (!opponent.isGrounded) return
 
@@ -131,13 +132,10 @@ export class GameApp {
     const p1 = this.players[1]
     const dist = distanceBetween(p0.position, p1.position)
     if (dist < circleRadius * 2) {
-      if (p0.isMoving() && p1.isGrounded) {
-        p0.pushBack(dist / 2)
-        p1.pushBack(dist / 2)
-      }
-      if (p1.isMoving() && p0.isGrounded) {
-        p0.pushBack(dist / 2)
-        p1.pushBack(dist / 2)
+      if (p0.isGrounded === p1.isGrounded) {
+        console.log('push it back')
+        p0.pushBack(p0.isGrounded ? dist / 2 : 100)
+        p1.pushBack(p0.isGrounded ? dist / 2 : 100)
       }
     }
   }

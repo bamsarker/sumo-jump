@@ -1,3 +1,15 @@
+@font-face {
+  font-family: "kashima";
+  src: url("./assets/fonts/kashima-webfont.woff2") format("woff2"),
+    url("./assets/fonts/kashima-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "kashima", sans-serif;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -5,7 +17,6 @@ body {
   min-height: 100vh;
   display: flex;
   background: #384d48;
-  font-family: 'DM Sans', sans-serif;
 }
 
 canvas,
@@ -89,7 +100,7 @@ canvas,
   border: solid #cccccc 0.1em;
   font-size: 3vh;
   background: #fed766;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   color: #000000ad;
   pointer-events: all;
   outline: none;

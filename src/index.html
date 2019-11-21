@@ -1,35 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+    <title>sumo jump</title>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <meta name="theme-color" content="#fffcf2" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport"
-        content="initial-scale=1, maximum-scale=1" />
-  <title>sumo jump</title>
-  <link rel="stylesheet"
-        type="text/css"
-        href="main.css" />
-  <meta name="theme-color"
-        content="#fffcf2" />
+    <meta
+      name="Description"
+      content="A game about getting circles over to the other side."
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+  </head>
 
-  <meta name="Description"
-        content="A game about getting circles over to the other side." />
-  <link rel="manifest"
-        href="manifest.webmanifest" />
-</head>
-
-<body class="test">
-  <noscript>soz, you need js for this.</noscript>
-  <script src="main.ts"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      if (!navigator.serviceWorker.controller) {
-        navigator.serviceWorker.register('sw.js', {
-          scope: './'
-        })
+  <body class="test">
+    <noscript>soz, you need js for this.</noscript>
+    <p style="visibility: hidden; font-family: 'kashima';">game</p>
+    <script src="main.ts"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        if (!navigator.serviceWorker.controller) {
+          navigator.serviceWorker.register("sw.js", {
+            scope: "./"
+          });
+        }
       }
-    }
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>

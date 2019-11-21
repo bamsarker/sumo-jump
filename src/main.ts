@@ -1,8 +1,9 @@
-import { GameApp } from './app/App'
-import { gameWidth, gameHeight } from './config'
+import { GameApp } from "./app/App";
+import { gameWidth, gameHeight } from "./config";
 
 const loadGame = () => {
-  const myGame = new GameApp(document.body, gameWidth, gameHeight, loadGame)
-}
+  const myGame = new GameApp(document.body, gameWidth, gameHeight, loadGame);
+};
 
-loadGame()
+if (document.fonts) document.fonts.ready.then(loadGame);
+else loadGame();

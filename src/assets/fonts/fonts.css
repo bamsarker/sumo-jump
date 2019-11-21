@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "kashima";
+  src: url("kashima-webfont.woff2") format("woff2"),
+    url("kashima-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "kashima", sans-serif;
+}

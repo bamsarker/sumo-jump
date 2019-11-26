@@ -15,7 +15,6 @@ import { distanceBetween } from "../utils";
 import { ScoreText } from "./ScoreText";
 
 import sumo from "../assets/images/sumo/*.png";
-import kashima from "../assets/fonts/Kashima.otf";
 
 console.log(sumo);
 
@@ -45,8 +44,6 @@ export class GameApp {
     Object.keys(sumo).forEach(key => {
       loader.add(key, sumo[key]);
     });
-
-    loader.add("kashima", kashima);
 
     loader.load(this.onAssetsLoaded);
   }

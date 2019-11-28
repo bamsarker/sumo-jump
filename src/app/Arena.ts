@@ -4,6 +4,7 @@ import { fade, grow } from './animations'
 import Player from './Player'
 import { Point } from '../interfaces'
 import { distanceBetween } from '../utils'
+import Enemy from './Enemy'
 
 export class Arena extends PIXI.Graphics {
   color: number
@@ -25,12 +26,22 @@ export class Arena extends PIXI.Graphics {
     this.y = y
   }
 
-  positionInBounds = (pos: Point) => {
+  positionInBounds = (pos: Point, radius = circleRadius) => {
     const dist = distanceBetween({ x: 0, y: 0 }, pos)
     return dist > this.radius + circleRadius
   }
 
-  checkBounds = (players: Player[]) => {
+  checkBounds = (players: Player[], enemies: Enemy[]) => {
+    enemies.forEach(enemy => {
+      if (this.positionInBounds(enemy.position, enemy.radius)) {
+        players[0].scorePoint()
+        enemy.deactivate()
+        enemy.destroy()
+      }
+    })
+
+    if (players.length < 2) return
+
     this.updatePositionAndScale(players)
     players
       .filter(p => p.active)

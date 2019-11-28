@@ -34,6 +34,7 @@ export class Player extends PIXI.Container {
   cooldownIndicator: CooldownIndicator
   sprite: PIXI.Sprite
   greySprite: PIXI.Sprite
+  radius: number
   constructor({ x, y, color, keys, handleGroundPound, scoreText, sprite }) {
     super()
 
@@ -51,12 +52,14 @@ export class Player extends PIXI.Container {
     this.greySprite.rotation = 90 * PIXI.DEG_TO_RAD
     this.greySprite.visible = false
 
+    this.radius = circleRadius
+
     this.startingPos = { x, y }
     this.poundEffect = new PoundEffect({
       x,
       y,
       color,
-      radius: circleRadius
+      radius: this.radius
     })
     this.xSpeed = 0
     this.ySpeed = 0
@@ -71,14 +74,13 @@ export class Player extends PIXI.Container {
       y: 0,
       parent: this,
       color,
-      radius: circleRadius
+      radius: this.radius
     })
 
     this.handleGroundPound = handleGroundPound
 
-    this.addChild(new Circle({ x: 15, y: 0, color: 0x384d48, radius: 15 }))
     this.target = new Circle({
-      x: circleRadius * 6,
+      x: this.radius * 6,
       y: 0,
       color: 0x88888800,
       radius: 5
@@ -238,21 +240,34 @@ export class Player extends PIXI.Container {
     }
   }
 
+  faceForward = (x: number, y: number) => {
+    let deg = 0
+
+    if (x > 0 && y > 0) deg = 45
+    else if (x === 0 && y > 0) deg = 90
+    else if (x < 0 && y > 0) deg = 135
+    else if (x < 0 && y === 0) deg = 180
+    else if (x < 0 && y < 0) deg = 225
+    else if (x === 0 && y < 0) deg = 270
+    else if (x > 0 && y < 0) deg = 315
+    else if (x === 0 && y === 0) deg = PIXI.RAD_TO_DEG * this.rotation
+
+    this.rotation = PIXI.DEG_TO_RAD * deg
+  }
+
   prevPos: Point
   update = (delta: number, opponent: Player) => {
     if (!this.active || this.isKnockedBack || !this.isGrounded) return
 
     this.prevPos = { x: this.position.x, y: this.position.y }
 
-    this.lookAt(opponent.x, opponent.y)
+    // this.lookAt(opponent.x, opponent.y)
 
     this.normalizeSpeed()
 
     this.position.x += this.xSpeed * delta
     this.position.y += this.ySpeed * delta
-
-    if (distanceBetween(this.prevPos, this.position) > 0)
-      console.log(distanceBetween(this.prevPos, this.position))
+    this.faceForward(this.xSpeed, this.ySpeed)
   }
 }
 
